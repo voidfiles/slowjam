@@ -58,4 +58,9 @@ To install Slowjam, simply:
     $ pip install slowjam
     ✨🍰✨
 
-Satisfaction, guaranteed.
+
+History
+-------
+
+This was originially open-sourced by App.net in their open source version of `Alpha 
+<https://github.com/appdotnet/alpha>`_.

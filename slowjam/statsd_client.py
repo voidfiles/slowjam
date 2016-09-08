@@ -1,6 +1,5 @@
 import socket
 import binascii
-import re
 import logging
 
 from .context import slowjam_context
@@ -24,7 +23,7 @@ class StatsdClient(object):
     prefix/bucket so the stat gets logged to somewhere other than #2
     """
 
-    def __init__(self, hosts, app, environment, region, machine, socket_builder=None):
+    def __init__(self, hosts, prefix, socket_builder=None):
 
         self.sock = socket_builder() or socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -36,17 +35,14 @@ class StatsdClient(object):
 
         self.addrs = addrs
         self.count = len(addrs)
-        self.app = app
-        self.environment = environment
-        self.region = region
-        self.machine = re.sub(r"\.", "-", machine)
+        self.prefix = prefix
 
     def get_addr(self, stat):
         return self.addrs[(binascii.crc32(stat) & 0xffffffff) % self.count]
 
     def make_prefix(self, prefix):
         if prefix is None:
-            return '%s.%s' % (self.environment, self.app)
+            return self.prefix
         else:
             return prefix
 

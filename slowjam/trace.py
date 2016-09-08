@@ -3,12 +3,7 @@ from contextlib import contextmanager
 from functools import wraps
 import logging
 
-from .statsd_client import graphite_duration
 from .context import slowjam_context
-
-
-def _default_time_logger(stat, request_time_ms, prefix):
-    graphite_duration(stat, request_time_ms, prefix)
 
 
 @contextmanager
@@ -21,7 +16,7 @@ def jam(stat, label=None, logger=logging.getLogger('timer'), prefix=None, extras
     end_time = time.time()
     request_time_ms = (end_time - start_time) * 1000
 
-    _default_time_logger(stat, request_time_ms, prefix)
+    slowjam_context.log_time(stat, request_time_ms, prefix)
 
     if label:
         logger.info("%s took %dms" % (label, request_time_ms))

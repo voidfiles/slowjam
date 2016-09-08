@@ -2,3 +2,7 @@
 .eggs
 __pycache__
 *.pyc
+LICENSE
+build/
+dist/
+slowjam.egg-info/

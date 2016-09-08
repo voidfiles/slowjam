@@ -164,6 +164,7 @@ class ProfileContext(object):
 class ProfileGlobalContext(threading.local):
     _started = False
     enabled_tags = set()
+    time_recorder = None
 
     def start(self, event, fmt=None, extras=None, tag=None):
         if not _slowjam_profiling:
@@ -225,6 +226,14 @@ class ProfileGlobalContext(threading.local):
     def profiling(self):
         return _slowjam_profiling and self._started
 
+    def set_time_logger(self, func):
+        self.time_recorder = func
+
+    def log_time(self, stat, request_time_ms, prefix):
+        if not self.time_recorder:
+            return
+
+        self.time_recorder(stat, request_time_ms, prefix)
 
 _thread_slowjam_context = threading.local()
 

@@ -6,6 +6,11 @@ except ImportError:
 
     settings = Settings()
 
+try:
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:
+    MiddlewareMixin = object
+
 import json
 import logging
 
@@ -14,7 +19,7 @@ from slowjam.context import slowjam_context
 logger = logging.getLogger(__name__)
 
 
-class SlowjamMiddleware(object):
+class SlowjamMiddleware(MiddlewareMixin):
 
     def process_view(self, request, view_func, view_args, view_kwargs):
         if slowjam_context:

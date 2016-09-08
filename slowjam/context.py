@@ -3,7 +3,7 @@ import time
 from contextlib import contextmanager
 from collections import defaultdict
 
-from bepress.utils.python import Proxy
+from .proxy import Proxy
 
 _slowjam_profiling = True
 

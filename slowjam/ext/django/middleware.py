@@ -22,6 +22,11 @@ logger = logging.getLogger(__name__)
 class SlowjamMiddleware(MiddlewareMixin):
 
     def process_view(self, request, view_func, view_args, view_kwargs):
+        try:
+            request.view_name = '.'.join((view_func.__module__, view_func.__name__))
+        except AttributeError:
+            request.view_name = '(unknown)'
+
         if slowjam_context:
             extras = {
                 'host': request.META.get('HTTP_HOST'),

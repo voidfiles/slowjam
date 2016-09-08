@@ -35,6 +35,8 @@ if sys.argv[-1] == 'publish':
 
 packages = [
     'slowjam',
+    'slowjam.ext',
+    'slowjam.ext.django',
 ]
 
 requires = []

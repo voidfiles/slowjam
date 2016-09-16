@@ -9,15 +9,15 @@ Listen to this:
 
     >>> import requests
 
-    >>> from slowjam.trace import jam
+    >>> from slowjam.trace import span
     >>> from slowjam.context import slowjam_context
 
     >>> slowjam_context.start('my_application', extras={'http': True})
 
-    >>> with jam('listen', extras={'deylay': 3}):
+    >>> with span('listen', extras={'deylay': 3}):
     >>>     resp = requests.get('https://httpbin.org/delay/3')
 
-    >>>     with jam('request.origin'):
+    >>>     with span('request.origin'):
     >>>         origin = resp.json().get('origin')
     >>>         origin.split('.')
 
@@ -48,6 +48,11 @@ Feature Support
 - Usable output
 - Graphite Integration
 
+Could Happen
+------------
+
+- `OpenTracing <http://opentracing.io/>`_. PR's welcome
+
 Installation
 ------------
 
@@ -62,5 +67,5 @@ To install Slowjam, simply:
 History
 -------
 
-This was originially open-sourced by App.net in their open source version of `Alpha 
+This was originially open-sourced by App.net in their open source version of `Alpha
 <https://github.com/appdotnet/alpha>`_.

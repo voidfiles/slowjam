@@ -6,3 +6,6 @@ LICENSE
 build/
 dist/
 slowjam.egg-info/
+.venv
+.env
+db.sqlite3

@@ -1,6 +1,6 @@
 import time
 
-from slowjam.trace import jam
+from slowjam.trace import span
 from slowjam.context import slowjam_context
 from slowjam.statsd_client import graphite_count
 
@@ -8,10 +8,10 @@ from slowjam.statsd_client import graphite_count
 def test_slowjam():
     slowjam_context.start('my_application', extras={'testing': True})
 
-    with jam('wait', extras={'delay': 3}):
+    with span('wait', extras={'delay': 3}):
         time.sleep(3)
 
-        with jam('wait.itererate', extras={'iterations': 1000}):
+        with span('wait.itererate', extras={'iterations': 1000}):
             b = []
             for i in xrange(0, 1000):
                 b += [i]

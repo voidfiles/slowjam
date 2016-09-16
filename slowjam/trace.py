@@ -7,7 +7,7 @@ from .context import slowjam_context
 
 
 @contextmanager
-def jam(stat, label=None, logger=logging.getLogger('timer'), prefix=None, extras=None, tag=None):
+def span(stat, label=None, logger=logging.getLogger('timer'), prefix=None, extras=None, tag=None):
     start_time = time.time()
 
     with slowjam_context.event(stat, fmt=label, extras=extras, tag=tag) as ctx:
@@ -22,6 +22,10 @@ def jam(stat, label=None, logger=logging.getLogger('timer'), prefix=None, extras
         logger.info("%s took %dms" % (label, request_time_ms))
 
 
+def annotate(stat, fmt=None, extras=None, tag=None):
+    slowjam_context.mark(stat, fmt, extras, tag)
+
+
 def timer(stat, label=None, logger=logging.getLogger('timer'), prefix=None, extras=None, tag=None, log_args=False):
     def timer_decorator(f):
         @wraps(f)
@@ -33,7 +37,7 @@ def timer(stat, label=None, logger=logging.getLogger('timer'), prefix=None, extr
                 if kwargs:
                     _extras['kwargs'] = kwargs
 
-            with jam(stat, label=label, logger=logger, prefix=prefix, extras=_extras, tag=tag):
+            with span(stat, label=label, logger=logger, prefix=prefix, extras=_extras, tag=tag):
                 return f(*args, **kwargs)
 
         return wrapped_f
